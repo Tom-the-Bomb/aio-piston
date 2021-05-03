@@ -23,7 +23,7 @@ class AsyncMeta(type):
             await fn
         return obb
 
-class Tio(metaclass=AsyncMeta):
+class Piston(metaclass=AsyncMeta):
 
     async def __init__(self, session: Optional[ClientSession] = None, loop: Optional[AbstractEventLoop] = None):
         self.API_URL       = "https://emkc.org/api/v1/piston/execute"
