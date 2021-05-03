@@ -58,7 +58,7 @@ class Piston(metaclass=AsyncMeta):
         async with self.session.get(self.LANGUAGES_URL) as r:
             if r.ok:
                 data = await r.json()
-                self.languages = list(data.keys())
+                self.languages = [item.get("language", "N/A") for item in data]
     
     async def execute(
         self, code: str, *, 
