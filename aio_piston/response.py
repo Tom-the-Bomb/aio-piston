@@ -11,7 +11,7 @@ class PistonResponse:
         self.output   = data.get("output")
 
     def __repr__(self):
-        return f"<PistonResponse language={self.language} version={self.version} ran={self.ran}>"
+        return f"<PistonResponse language='{self.language}' version='{self.version}' ran={self.ran}>"
 
     def __str__(self):
         return self.output
