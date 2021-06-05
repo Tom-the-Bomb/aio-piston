@@ -15,9 +15,11 @@ class Piston:
     def __init__(
         self, 
         session: Optional[ClientSession] = None, 
-        loop: Optional[asyncio.AbstractEventLoop] = None
+        loop: Optional[asyncio.AbstractEventLoop] = None, *,
+        store_languages: Optional[bool] = True,
     ) -> None:
-    
+
+        self._store_languages = store_languages
         self.API_URL = "https://emkc.org/api/v1/piston/execute"
         self.LANGUAGES_URL = "https://emkc.org/api/v2/piston/runtimes"
         self.languages = []
@@ -35,7 +37,10 @@ class Piston:
         else:
             self.session = None
 
-        self.loop.create_task(self._update_languages())
+        if self.loop.is_running():
+            self.loop.create_task(self._update_languages())
+        else:
+            self.loop.run_until_complete(self._update_languages())
 
     async def __aenter__(self) -> Piston:
         await self._update_languages()
@@ -49,11 +54,12 @@ class Piston:
 
     async def _update_languages(self) -> None:
         self.session = ClientSession()
-        async with self.session.get(self.LANGUAGES_URL) as r:
-            if r.ok:
-                data = await r.json()
-                self.languages = [item.get("language", "N/A") for item in data]
-            return None
+        if self._store_languages:
+            async with self.session.get(self.LANGUAGES_URL) as r:
+                if r.ok:
+                    data = await r.json()
+                    self.languages = [item.get("language", "N/A") for item in data]
+        return None
     
     async def execute(
         self, code: str, *, 
