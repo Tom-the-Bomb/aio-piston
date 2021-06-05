@@ -1,30 +1,23 @@
 # Aio-piston
 This is an unoffical Api wrapper for the [piston code execution engine](https://emkc.org/api/v2/piston/)
 
-**Examples**
+**Example**
+
 ```py
-import aio_piston
-import asyncio
+# assuming you are already inside an async environment and have already imported everything
+# to instantiate:
+# recommended to have a global class if you are going to run .execute more than 1 time throughout the program
+# alternatively you can use the async context manager if it's a one time use:
+# async with aio_piston.Piston() as piston: ...
+piston = aio_piston.Piston() 
 
-async def main():
-    async with await aio_piston.Piston() as piston:
-        out = await piston.execute('print("hello world")', language="python")
-        #execute the code
-        out2 = await piston.execute('print(input("what is your name"))', language="python", inputs="bob")
-        return out, out2
+# to execute
+output = await piston.execute("print('')", language="python") # pass in other optional kwargs if needed
 
-    #*OR* without a context manager
-    piston = await aio_piston.Piston()
-    ...
-    #do stuff
-    ...
-    #at the end
-    await piston.close()
+print(str(output)) # returns the full output, returns the .output attr
+print(output.stdout) # returns the stdout only
 
-out, out2 = asyncio.run(main())
-
-print(str(out))
-#full output
 print(vars(out).keys())
-#all the attributes of the response class
+#all the attributes of the response class .language, .stdout etc.
 ```
+---
