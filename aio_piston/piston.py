@@ -13,9 +13,9 @@ from .exceptions import ApiError
 class Piston:
 
     def __init__(
-        self, 
+        self, *, 
         session: Optional[ClientSession] = None, 
-        loop: Optional[asyncio.AbstractEventLoop] = None, *,
+        loop: Optional[asyncio.AbstractEventLoop] = None,
         store_languages: Optional[bool] = True,
     ) -> None:
 
@@ -42,6 +42,8 @@ class Piston:
         else:
             self.loop.run_until_complete(self._update_languages())
 
+        return None
+
     async def __aenter__(self) -> Piston:
         await self._update_languages()
         return self
@@ -53,7 +55,8 @@ class Piston:
         await self.session.close()
 
     async def _update_languages(self) -> None:
-        self.session = ClientSession()
+        if not self.session:
+            self.session = ClientSession()
         if self._store_languages:
             async with self.session.get(self.LANGUAGES_URL) as r:
                 if r.ok:

@@ -9,7 +9,7 @@ This is an unoffical Api wrapper for the [piston code execution engine](https://
 # recommended to have a global class if you are going to run .execute more than 1 time throughout the program
 # alternatively you can use the async context manager if it's a one time use:
 # async with aio_piston.Piston() as piston: ...
-piston = aio_piston.Piston() 
+piston = aio_piston.Piston() # pass in Optional 'loop' and 'session' kwargs etc.
 
 # to execute
 output = await piston.execute("print('')", language="python") # pass in other optional kwargs if needed
