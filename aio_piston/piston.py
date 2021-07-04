@@ -3,7 +3,7 @@ from __future__ import annotations
 import json
 import asyncio
 
-from typing import Optional
+from typing import Optional, List
 
 from aiohttp import ClientSession
 
@@ -19,10 +19,10 @@ class Piston:
         store_languages: Optional[bool] = True,
     ) -> None:
 
-        self._store_languages = store_languages
-        self.API_URL = "https://emkc.org/api/v1/piston/execute"
-        self.LANGUAGES_URL = "https://emkc.org/api/v2/piston/runtimes"
-        self.languages = []
+        self._store_languages: bool = store_languages
+        self.API_URL: str = "https://emkc.org/api/v2/piston/execute"
+        self.LANGUAGES_URL: str = "https://emkc.org/api/v2/piston/runtimes"
+        self.languages: List[str] = []
 
         if loop:
             self.loop = loop
@@ -67,18 +67,24 @@ class Piston:
     async def execute(
         self, code: str, *, 
         language  : str, 
+        version   : Optional[str] = "x",
         inputs    : Optional[str] = "",
         compile_timeout: Optional[int] = 10000,
         run_timeout: Optional[int]  = 3000,
+        compile_memory_limit: Optional[int] = -1,
+        run_memory_limit: Optional[int] = -1,
         arguments  : Optional[list] = [], 
     ) -> Optional[PistonResponse]:
 
         data = json.dumps({
             "language": language,
-            "source"  : code,
+            "version": version,
+            "files"  : code,
             "stdin"   : inputs,
             "compile_timeout": compile_timeout,
             "run_timeout": run_timeout,
+            "compile_memory_limit": compile_memory_limit,
+            "run_memory_limit": run_memory_limit,
             "args"       : arguments,
         })
 
