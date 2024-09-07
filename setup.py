@@ -6,9 +6,9 @@ with open("aio_piston/__init__.py") as f:
     version = re.search(r'^__version__\s*=\s*[\'"]([^\'"]*)[\'"]', f.read(), re.MULTILINE).group(1)
 
 setup(
-    name         = "aio_piston", 
-    author       = "Tom-the-Bomb", 
-    version      = version, 
+    name         = "aio_piston",
+    author       = "Tom-the-Bomb",
+    version      = version,
     description  = "An unoffical async API wrapper for the piston code execution engine",
     long_description              = open("README.md").read(),
     long_description_content_type = "text/markdown",

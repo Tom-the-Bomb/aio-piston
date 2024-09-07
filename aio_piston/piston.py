@@ -11,10 +11,9 @@ from .response import PistonResponse
 from .exceptions import ApiError
 
 class Piston:
-
     def __init__(
-        self, *, 
-        session: Optional[ClientSession] = None, 
+        self, *,
+        session: Optional[ClientSession] = None,
         loop: Optional[asyncio.AbstractEventLoop] = None,
         store_languages: Optional[bool] = True,
     ) -> None:
@@ -31,7 +30,7 @@ class Piston:
                 self.loop = asyncio.get_running_loop()
             except RuntimeError:
                 self.loop = asyncio.get_event_loop()
-        
+
         if session:
             self.session = session
         else:
@@ -63,14 +62,14 @@ class Piston:
                     data = await r.json()
                     self.languages = [item.get("language", "N/A") for item in data]
         return None
-    
+
     async def execute(
-        self, code: str, *, 
-        language  : str, 
+        self, code: str, *,
+        language  : str,
         inputs    : Optional[str] = "",
         compile_timeout: Optional[int] = 10000,
         run_timeout: Optional[int]  = 3000,
-        arguments  : Optional[list] = [], 
+        arguments  : Optional[list] = [],
     ) -> Optional[PistonResponse]:
 
         data = json.dumps({

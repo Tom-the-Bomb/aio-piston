@@ -1,6 +1,5 @@
 
 class PistonResponse:
-
     def __init__(self, data: dict) -> None:
 
         self.ran = data.get("ran")
@@ -21,6 +20,6 @@ class PistonResponse:
             return self.output == o.output
         else:
             return self.output == o.output
-    
+
     def __ne__(self, o) -> bool:
         return not self.__eq__(o)
